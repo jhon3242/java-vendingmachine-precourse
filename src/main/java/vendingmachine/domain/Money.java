@@ -10,6 +10,14 @@ public class Money {
 		this.money = money;
 	}
 
+	public boolean afford(int amount) {
+		return money - amount >= 0;
+	}
+
+	public void withdraw(int amount) {
+		this.money -= amount;
+	}
+
 	private void validate(int money) {
 		validateRange(money);
 	}

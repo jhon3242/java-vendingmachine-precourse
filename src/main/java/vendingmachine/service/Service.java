@@ -8,6 +8,7 @@ public class Service {
 	public void initBalance(VendingMachine vendingMachine, String balanceString) {
 		Money balance = new Money(Converter.stringToInt(balanceString));
 		vendingMachine.insertBalance(balance);
+		vendingMachine.balanceToCoin();
 	}
 
 	public void initProduct(VendingMachine vendingMachine, String productFormat) {
