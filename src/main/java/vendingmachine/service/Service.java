@@ -22,18 +22,14 @@ public class Service {
 		String[] split = productFormat.split(";");
 		for (String productString : split) {
 			String pattern = "^\\[(.*?),(\\d*?),(\\d*?)\\]$";
-
 			Pattern regexPattern = Pattern.compile(pattern);
 			Matcher matcher = regexPattern.matcher(productString);
-
 			if (matcher.find()) {
 				String productName = matcher.group(1);
 				int price = Converter.stringToInt(matcher.group(2));
 				int quantity = Converter.stringToInt(matcher.group(3));
 				Product product = new Product(productName, price, quantity);
-				System.out.println("상품명: " + productName);
-				System.out.println("가격: " + price);
-				System.out.println("수량: " + quantity);
+				vendingMachine.addProduct(product);
 				return;
 			}
 			throw new IllegalArgumentException(ErrorMessage.PRODUCT_FORMAT.getMessage());

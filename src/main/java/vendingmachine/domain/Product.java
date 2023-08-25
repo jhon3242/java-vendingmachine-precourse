@@ -1,5 +1,7 @@
 package vendingmachine.domain;
 
+import java.util.Objects;
+
 public class Product {
 	private String name;
 	private Money cost;
@@ -46,5 +48,10 @@ public class Product {
 		if (count < GameOption.COUNT_MIN) {
 			throw new IllegalArgumentException("개수는 0 이상 숫자를 입력해야합니다.");
 		}
+	}
+
+
+	public String getName() {
+		return name;
 	}
 }

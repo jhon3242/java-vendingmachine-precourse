@@ -8,7 +8,7 @@ import java.util.*;
 public class VendingMachine {
 
 	private Money balance;
-	private List<Product> products = new ArrayList<>();
+	private Map<String, Product> productRepository = new HashMap<>();
 	private Map<Coin, Integer> coinMap = new HashMap<>();
 
 	public void insertBalance(Money balance) {
@@ -27,6 +27,11 @@ public class VendingMachine {
 		}
 	}
 
+	// TODO : 기존 상품이 있으면 수량 추가(옵션)
+	public void addProduct(Product product) {
+		productRepository.put(product.getName(), product);
+	}
+
 	private Coin pickCoin() {
 		int pickedCoinAmount = Randoms.pickNumberInList(GameOption.COIN_AMOUNTS);
 		return Coin.findByAmount(pickedCoinAmount);
@@ -39,4 +44,6 @@ public class VendingMachine {
 	public int getCoinCount(Coin coin) {
 		return coinMap.getOrDefault(coin, 0);
 	}
+
+
 }
