@@ -42,8 +42,10 @@ public class MainController {
 		try {
 			String productFormat = inputView.readProduct();
 			service.initProduct(vendingMachine, productFormat);
-		} catch (IllegalArgumentException e) {
 
+		} catch (IllegalArgumentException e) {
+			outputView.printError(e);
+			initProducts(vendingMachine);
 		}
 	}
 

@@ -23,10 +23,10 @@ public class Money {
 	}
 
 	private void validateRange(int money) {
-		if (money < GameOption.MIN_MONEY) {
+		if (money < GameOption.MONEY_MIN) {
 			throw new IllegalArgumentException(ErrorMessage.NUMBER_TO_SMALL.getMessage());
 		}
-		if (money > GameOption.MAX_MONEY) {
+		if (money > GameOption.MONEY_MAX) {
 			throw new IllegalArgumentException(ErrorMessage.NUMBER_TO_LARGE.getMessage());
 		}
 	}
