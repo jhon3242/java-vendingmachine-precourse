@@ -22,7 +22,9 @@ public class InputView {
 //	}
 
 	public String readProduct() {
-		String input = "";
+		System.out.println(Message.READ_PRODUCT);
+		String input = Console.readLine();
+		IOValidator.validateString(input);
 		return input;
 	}
 
