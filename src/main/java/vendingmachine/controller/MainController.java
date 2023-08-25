@@ -31,6 +31,7 @@ public class MainController {
 		try {
 			String balanceString = inputView.readVendingMachineBalance();
 			service.initBalance(vendingMachine, balanceString);
+			outputView.printCoins(vendingMachine);
 		} catch (IllegalArgumentException e) {
 			outputView.printError(e);
 			initBalance(vendingMachine);
