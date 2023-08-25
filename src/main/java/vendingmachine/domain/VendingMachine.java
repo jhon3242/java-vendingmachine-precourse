@@ -8,6 +8,7 @@ import java.util.*;
 public class VendingMachine {
 
 	private Money balance;
+	private Money insertedMoney;
 	private Map<String, Product> productRepository = new HashMap<>();
 	private Map<Coin, Integer> coinMap = new HashMap<>();
 
@@ -43,6 +44,26 @@ public class VendingMachine {
 
 	public int getCoinCount(Coin coin) {
 		return coinMap.getOrDefault(coin, 0);
+	}
+
+
+	public void insertMoney(Money money) {
+		this.insertedMoney = money;
+	}
+
+	// TODO : 리펙터링 가능한지 확인
+	public Money getInsertedMoney() {
+		return this.insertedMoney;
+	}
+
+	public boolean canPurchase() {
+		Money minCost = new Money(GameOption.MONEY_MAX);
+		for (Product value : productRepository.values()) {
+			if (minCost.compareTo(value.getCost()) > 0) {
+				minCost = value.getCost();
+			}
+		}
+		return insertedMoney.afford(minCost.getMoney());
 	}
 
 

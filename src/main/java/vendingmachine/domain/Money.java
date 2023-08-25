@@ -2,7 +2,7 @@ package vendingmachine.domain;
 
 import vendingmachine.ErrorMessage;
 
-public class Money {
+public class Money implements Comparable<Money>{
 	private int money;
 
 	public Money(int money) {
@@ -29,5 +29,14 @@ public class Money {
 		if (money > GameOption.MONEY_MAX) {
 			throw new IllegalArgumentException(ErrorMessage.NUMBER_TO_LARGE.getMessage());
 		}
+	}
+
+	public int getMoney() {
+		return money;
+	}
+
+	@Override
+	public int compareTo(Money o) {
+		return money - o.money;
 	}
 }

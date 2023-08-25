@@ -25,4 +25,8 @@ public class OutputView {
 	private void printCoin(VendingMachine vendingMachine, Coin coin) {
 		System.out.printf(Message.COIN_FORMAT.toString(), coin.getAmount(), vendingMachine.getCoinCount(coin));
 	}
+
+	public void printInsertedMoney(VendingMachine vendingMachine) {
+		System.out.printf("투입 금액: %d원", vendingMachine.getInsertedMoney().getMoney());
+	}
 }
