@@ -1,6 +1,5 @@
 package vendingmachine.controller;
 
-import vendingmachine.domain.Customer;
 import vendingmachine.domain.Money;
 import vendingmachine.domain.VendingMachine;
 import vendingmachine.service.Service;
@@ -15,7 +14,7 @@ public class MainController {
 	public void run() {
 		VendingMachine vendingMachine = initVendingMachine();
 		handlePurchase(vendingMachine);
-//		handleChange(vendingMachine, customer);
+		handleChange(vendingMachine);
 	}
 
 
@@ -31,7 +30,7 @@ public class MainController {
 		try {
 			String balanceString = inputView.readVendingMachineBalance();
 			service.initBalance(vendingMachine, balanceString);
-			outputView.printCoins(vendingMachine);
+			outputView.printAllCoins(vendingMachine);
 		} catch (IllegalArgumentException e) {
 			outputView.printError(e);
 			initBalance(vendingMachine);
@@ -48,7 +47,6 @@ public class MainController {
 			initProducts(vendingMachine);
 		}
 	}
-
 
 	private void handlePurchase(VendingMachine vendingMachine) {
 		initMoney(vendingMachine);
@@ -78,13 +76,10 @@ public class MainController {
 		}
 	}
 
-
-
-
-
-
-	private void handleChange(VendingMachine vendingMachine, Customer customer) {
-
+	private void handleChange(VendingMachine vendingMachine) {
+		outputView.printInsertedMoney(vendingMachine);
+		service.changeIntoCoins(vendingMachine);
+		outputView.printChange(vendingMachine);
 	}
 
 

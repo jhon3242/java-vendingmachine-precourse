@@ -1,6 +1,7 @@
 package vendingmachine;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static camp.nextstep.edu.missionutils.test.Assertions.assertRandomNumberInListTest;
@@ -22,6 +23,23 @@ class ApplicationTest extends NsTest {
             },
             100, 100, 100, 100, 50
         );
+    }
+
+    @Nested
+    class ChangeTest {
+
+        @Test
+        void changeSuccessTest() {
+            assertRandomNumberInListTest(
+                    () -> {
+                        run("455", "[콜라,1500,20];[사이다,1000,10]", "3000", "콜라", "사이다");
+                        assertThat(output()).contains(
+                                "잔돈", "100원 - 3개", "50원 - 3개"
+                        );
+                    },
+                    100, 100, 50, 50, 50, 100
+            );
+        }
     }
 
     @Test

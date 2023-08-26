@@ -2,6 +2,7 @@ package vendingmachine.domain;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import vendingmachine.Coin;
+import vendingmachine.utils.Converter;
 
 import java.util.*;
 
@@ -11,7 +12,8 @@ public class VendingMachine {
 	private Money insertedMoney;
 	// TODO : 원시값 포장 가능
 	private Map<String, Product> productRepository = new HashMap<>();
-	private Map<Coin, Integer> coinMap = new HashMap<>();
+	private Map<Coin, Integer> coinMap;
+	private Map<Coin, Integer> changeRepository;
 
 	public void insertBalance(Money balance) {
 		if (this.balance == null) {
@@ -19,14 +21,21 @@ public class VendingMachine {
 		}
 	}
 
-	public void balanceToCoin() {
-		while (canChange()) {
+	private Map<Coin, Integer> moneyToRandomCoin(Money money) {
+		Map<Coin, Integer> result = new HashMap<>();
+		while (canChange(money)) {
 			Coin pickedCoin = pickCoin();
-			if (balance.afford(pickedCoin.getAmount())) {
-				balance.withdraw(pickedCoin.getAmount());
-				coinMap.put(pickedCoin, coinMap.getOrDefault(pickedCoin, 0) + 1);
+			if (money.afford(pickedCoin.getAmount())) {
+				money.withdraw(pickedCoin.getAmount());
+				result.put(pickedCoin, result.getOrDefault(pickedCoin, 0) + 1);
 			}
 		}
+		return result;
+	}
+
+	public void balanceToCoin() {
+		Map<Coin, Integer> coinIntegerMap = moneyToRandomCoin(balance);
+		this.coinMap = coinIntegerMap;
 	}
 
 	// TODO : 기존 상품이 있으면 수량 추가(옵션)
@@ -39,14 +48,13 @@ public class VendingMachine {
 		return Coin.findByAmount(pickedCoinAmount);
 	}
 
-	private boolean canChange() {
-		return balance.afford(Coin.COIN_10.getAmount());
+	private boolean canChange(Money money) {
+		return money.afford(Coin.COIN_10.getAmount());
 	}
 
-	public int getCoinCount(Coin coin) {
-		return coinMap.getOrDefault(coin, 0);
+	public Map<Coin, Integer> getCoinMap() {
+		return coinMap;
 	}
-
 
 	public void insertMoney(Money money) {
 		this.insertedMoney = money;
@@ -105,29 +113,21 @@ public class VendingMachine {
 		insertedMoney.subtractMoney(product.getCost());
 	}
 
+	public void insertedMoneyToChange() {
+		Map<Coin, Integer> coinRepository = new HashMap<>();
+		for (Coin coin : coinMap.keySet()) {
+			if (coinMap.get(coin) > 0 && insertedMoney.afford(coin.getAmount())) {
+				int moneyAmount = insertedMoney.getMoneyAmount();
+				int count = Math.min(moneyAmount / coin.getAmount(), coinMap.get(coin));
+				insertedMoney.subtractMoney(new Money(coin.getAmount() * count));
+				coinRepository.put(coin, count);
+			}
+		}
+		this.changeRepository = coinRepository;
+	}
 
+	public Map<Coin, Integer> getChangeRepository() {
+		return changeRepository;
+	}
 
-//	public boolean canPurchase() {
-//
-//		return insertedMoney.afford(minCost.getMoney());
-//	}
-//
-//	public boolean hasProduct(String productName) {
-//		Product product = productRepository.get(productName);
-//		if (product == null) {
-//			return false;
-//		}
-//		if (!product.canPurchase()) {
-//			return false;
-//		}
-//		return true;
-//	}
-//
-//	public void purchaseProduct(String productName) {
-//
-//	}
-//
-//	public boolean affordProduct(String productName) {
-//		productRepository
-//	}
 }

@@ -1,11 +1,13 @@
 package vendingmachine.service;
 
+import vendingmachine.Coin;
 import vendingmachine.ErrorMessage;
 import vendingmachine.domain.Money;
 import vendingmachine.domain.Product;
 import vendingmachine.domain.VendingMachine;
 import vendingmachine.utils.Converter;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,5 +45,10 @@ public class Service {
 	public void purchase(VendingMachine vendingMachine, String productName) {
 		vendingMachine.validateCanPurchase(productName);
 		vendingMachine.purchase(productName);
+	}
+
+
+	public void changeIntoCoins(VendingMachine vendingMachine) {
+		vendingMachine.insertedMoneyToChange();
 	}
 }

@@ -31,7 +31,7 @@ public class Money implements Comparable<Money>{
 		}
 	}
 
-	public int getMoney() {
+	public int getMoneyAmount() {
 		return money;
 	}
 
@@ -45,7 +45,7 @@ public class Money implements Comparable<Money>{
 	}
 
 	public void subtractMoney(Money cost) {
-		validate(money - cost.getMoney());
-		money -= cost.getMoney();
+		validate(money - cost.getMoneyAmount());
+		money -= cost.getMoneyAmount();
 	}
 }

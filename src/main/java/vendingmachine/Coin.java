@@ -1,6 +1,9 @@
 package vendingmachine;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public enum Coin {
     COIN_500(500),
@@ -23,5 +26,9 @@ public enum Coin {
 
     public int getAmount() {
         return amount;
+    }
+
+    public static List<Coin> getAll() {
+        return Arrays.stream(values()).collect(Collectors.toList());
     }
 }
