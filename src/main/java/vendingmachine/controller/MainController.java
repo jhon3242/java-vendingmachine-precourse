@@ -58,6 +58,16 @@ public class MainController {
 		}
 	}
 
+	private void initMoney(VendingMachine vendingMachine) {
+		try {
+			Money money = new Money(inputView.readMoney());
+			service.insertMoney(vendingMachine, money);
+		} catch (IllegalArgumentException e) {
+			outputView.printError(e);
+			initMoney(vendingMachine);
+		}
+	}
+
 	private void purchaseProduct(VendingMachine vendingMachine) {
 		try {
 			String productName = inputView.readProductName();
@@ -68,15 +78,7 @@ public class MainController {
 		}
 	}
 
-	private void initMoney(VendingMachine vendingMachine) {
-		try {
-			Money money = new Money(inputView.readMoney());
-			service.insertMoney(vendingMachine, money);
-		} catch (IllegalArgumentException e) {
-			outputView.printError(e);
-			initMoney(vendingMachine);
-		}
-	}
+
 
 
 

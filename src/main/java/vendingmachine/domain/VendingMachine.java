@@ -101,7 +101,8 @@ public class VendingMachine {
 
 	public void purchase(String productName) {
 		Product product = productRepository.get(productName);
-
+		product.subtractCount();
+		insertedMoney.subtractMoney(product.getCost());
 	}
 
 

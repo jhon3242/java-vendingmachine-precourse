@@ -43,4 +43,9 @@ public class Money implements Comparable<Money>{
 	public boolean isLargerThen(Money o) {
 		return money > o.money;
 	}
+
+	public void subtractMoney(Money cost) {
+		validate(money - cost.getMoney());
+		money -= cost.getMoney();
+	}
 }

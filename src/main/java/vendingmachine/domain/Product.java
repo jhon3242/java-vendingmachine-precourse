@@ -1,7 +1,5 @@
 package vendingmachine.domain;
 
-import java.util.Objects;
-
 public class Product {
 	private String name;
 	private Money cost;
@@ -49,6 +47,13 @@ public class Product {
 		}
 	}
 
+	public void subtractCount() {
+		count--;
+	}
+
+	public boolean canPurchase(Money money) {
+		return !cost.isLargerThen(money);
+	}
 
 	public String getName() {
 		return name;
@@ -58,11 +63,9 @@ public class Product {
 		return cost;
 	}
 
-	public boolean canPurchase(Money money) {
-		return !cost.isLargerThen(money);
-	}
-
 	public int getCount() {
 		return count;
 	}
+
+
 }
