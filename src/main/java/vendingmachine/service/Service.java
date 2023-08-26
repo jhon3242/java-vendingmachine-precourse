@@ -30,8 +30,7 @@ public class Service {
 				int quantity = Converter.stringToInt(matcher.group(3));
 				Product product = new Product(productName, price, quantity);
 				vendingMachine.addProduct(product);
-				continue;
-			}
+				continue;			}
 			throw new IllegalArgumentException(ErrorMessage.PRODUCT_FORMAT.getMessage());
 		}
 	}
@@ -40,7 +39,9 @@ public class Service {
 		vendingMachine.insertMoney(money);
 	}
 
-	public boolean canPurchase(VendingMachine vendingMachine) {
-		return vendingMachine.canPurchase();
+
+	public void purchase(VendingMachine vendingMachine, String productName) {
+		vendingMachine.validateCanPurchase(productName);
+		vendingMachine.purchase(productName);
 	}
 }

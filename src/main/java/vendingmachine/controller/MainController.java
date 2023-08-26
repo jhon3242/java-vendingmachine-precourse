@@ -52,9 +52,19 @@ public class MainController {
 
 	private void handlePurchase(VendingMachine vendingMachine) {
 		initMoney(vendingMachine);
-		while (service.canPurchase(vendingMachine)) {
+		while (vendingMachine.hasChanceToPurchase()) {
 			outputView.printInsertedMoney(vendingMachine);
-			inputView.readProductName();
+			purchaseProduct(vendingMachine);
+		}
+	}
+
+	private void purchaseProduct(VendingMachine vendingMachine) {
+		try {
+			String productName = inputView.readProductName();
+			service.purchase(vendingMachine, productName);
+		} catch (IllegalArgumentException e) {
+			outputView.printError(e);
+			purchaseProduct(vendingMachine);
 		}
 	}
 

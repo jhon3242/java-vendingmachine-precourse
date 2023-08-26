@@ -27,6 +27,6 @@ public class OutputView {
 	}
 
 	public void printInsertedMoney(VendingMachine vendingMachine) {
-		System.out.printf("투입 금액: %d원", vendingMachine.getInsertedMoney().getMoney());
+		System.out.printf("투입 금액: %d원\n", vendingMachine.getInsertedMoney().getMoney());
 	}
 }

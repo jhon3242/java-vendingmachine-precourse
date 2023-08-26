@@ -30,12 +30,35 @@ class VendingMachineTest {
 	}
 
 	@Test
-	@DisplayName("투입 금액이 최소 상품 구매보다 작은 경우 더이상 구매를 못한다.")
+	@DisplayName("투입 금액이 최소 가격 상품보다 작은 경우 더이상 구매를 못한다.")
+	void hasPurchaseChanceFalseTest() {
+		VendingMachine vendingMachine = new VendingMachine();
+		vendingMachine.addProduct(new Product("productA", 1000, 10));
+		vendingMachine.addProduct(new Product("productB", 1200, 10));
+		vendingMachine.insertMoney(new Money(500));
+		Assertions.assertThat(vendingMachine.hasChanceToPurchase()).isFalse();
+	}
+
+	@Test
+	@DisplayName("투입 금액이 최소 가격 상품보다 큰 경우 구매할 수 있다.")
+	void hasPurchaseChanceTrueTest() {
+		VendingMachine vendingMachine = new VendingMachine();
+		vendingMachine.addProduct(new Product("productA", 1000, 10));
+		vendingMachine.addProduct(new Product("productB", 1200, 10));
+		vendingMachine.insertMoney(new Money(1000));
+		Assertions.assertThat(vendingMachine.hasChanceToPurchase()).isTrue();
+	}
+
+	@Test
+	@DisplayName("투입 금액이 상품 가격 보다 작은 경우 구매를 못한다.")
 	void canPurchaseFalseTest() {
 		VendingMachine vendingMachine = new VendingMachine();
 		vendingMachine.addProduct(new Product("productA", 1000, 10));
-		vendingMachine.insertMoney(new Money(500));
-		Assertions.assertThat(vendingMachine.canPurchase()).isFalse();
+		vendingMachine.addProduct(new Product("productB", 1200, 10));
+		vendingMachine.insertMoney(new Money(1000));
+		Assertions.assertThatThrownBy(() -> {
+			vendingMachine.validateCanPurchase("productB");
+		}).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
@@ -43,7 +66,10 @@ class VendingMachineTest {
 	void canPurchaseTrueTest() {
 		VendingMachine vendingMachine = new VendingMachine();
 		vendingMachine.addProduct(new Product("productA", 1000, 10));
+		vendingMachine.addProduct(new Product("productB", 1200, 10));
 		vendingMachine.insertMoney(new Money(1000));
-		Assertions.assertThat(vendingMachine.canPurchase()).isTrue();
+		Assertions.assertThatNoException().isThrownBy(() -> {
+			vendingMachine.validateCanPurchase("productA");
+		});
 	}
 }

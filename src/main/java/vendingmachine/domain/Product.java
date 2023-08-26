@@ -20,7 +20,6 @@ public class Product {
 		validateCount(count);
 	}
 
-
 	private void validateName(String name) {
 		if (!name.matches(GameOption.PRODUCT_NAME_FORMAT)) {
 			throw new IllegalArgumentException("상품명은 숫자와 한글, 영어만 가능합니다.");
@@ -57,5 +56,13 @@ public class Product {
 
 	public Money getCost() {
 		return cost;
+	}
+
+	public boolean canPurchase(Money money) {
+		return !cost.isLargerThen(money);
+	}
+
+	public int getCount() {
+		return count;
 	}
 }

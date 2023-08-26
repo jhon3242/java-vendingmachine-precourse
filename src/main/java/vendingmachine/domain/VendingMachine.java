@@ -9,6 +9,7 @@ public class VendingMachine {
 
 	private Money balance;
 	private Money insertedMoney;
+	// TODO : 원시값 포장 가능
 	private Map<String, Product> productRepository = new HashMap<>();
 	private Map<Coin, Integer> coinMap = new HashMap<>();
 
@@ -56,15 +57,76 @@ public class VendingMachine {
 		return this.insertedMoney;
 	}
 
-	public boolean canPurchase() {
-		Money minCost = new Money(GameOption.MONEY_MAX);
-		for (Product value : productRepository.values()) {
-			if (minCost.compareTo(value.getCost()) > 0) {
-				minCost = value.getCost();
-			}
+	public boolean hasChanceToPurchase() {
+		Product minCostProduct = productRepository.values().stream()
+				.min(Comparator.comparing(Product::getCost))
+				.orElse(null);
+		if (minCostProduct == null) {
+			return false;
 		}
-		return insertedMoney.afford(minCost.getMoney());
+		if (notEnoughMoney(minCostProduct)) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean notEnoughMoney(Product minCostProduct) {
+		return minCostProduct.getCost().compareTo(insertedMoney) > 0;
+	}
+
+	public void validateCanPurchase(String productName) {
+		Product product = productRepository.get(productName);
+		validateExist(product);
+		validateCount(product);
+		validateAfford(product);
+	}
+
+	private void validateExist(Product product) {
+		if (product == null) {
+			throw new IllegalArgumentException("존재하지 않는 상품명입니다.");
+		}
+	}
+
+	private void validateCount(Product product) {
+		if (product.getCount() <= 0) {
+			throw new IllegalArgumentException("해당 상품은 품절입니다.");
+		}
+	}
+
+	private void validateAfford(Product product) {
+		if (!product.canPurchase(insertedMoney)) {
+			throw new IllegalArgumentException("해당 상품을 구매하기에 돈이 부족합니다.");
+		}
+	}
+
+	public void purchase(String productName) {
+		Product product = productRepository.get(productName);
+
 	}
 
 
+
+//	public boolean canPurchase() {
+//
+//		return insertedMoney.afford(minCost.getMoney());
+//	}
+//
+//	public boolean hasProduct(String productName) {
+//		Product product = productRepository.get(productName);
+//		if (product == null) {
+//			return false;
+//		}
+//		if (!product.canPurchase()) {
+//			return false;
+//		}
+//		return true;
+//	}
+//
+//	public void purchaseProduct(String productName) {
+//
+//	}
+//
+//	public boolean affordProduct(String productName) {
+//		productRepository
+//	}
 }
