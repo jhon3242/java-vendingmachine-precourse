@@ -9,7 +9,7 @@ import vendingmachine.domain.VendingMachine;
 import java.util.Map;
 
 public class OutputView {
-	public static final String ERROR_PREFIX = "[Error] : ";
+	public static final String ERROR_PREFIX = "[ERROR] : ";
 
 
 	public void printError(IllegalArgumentException e) {

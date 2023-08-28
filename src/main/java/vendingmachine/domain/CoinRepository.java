@@ -19,7 +19,7 @@ public class CoinRepository {
 	public Map<Coin, Integer> findByMoney(Money insertedMoney) {
 		Map<Coin, Integer> newCoinRepository = new HashMap<>();
 		for (Coin coin : Coin.getAll()) {
-			if (repository.get(coin) > 0 && insertedMoney.afford(coin.getAmount())) {
+			if (getCoinCount(coin) > 0 && insertedMoney.afford(coin.getAmount())) {
 				int moneyAmount = insertedMoney.getMoneyAmount();
 				int count = Math.min(moneyAmount / coin.getAmount(), repository.get(coin));
 				insertedMoney.subtractMoney(new Money(coin.getAmount() * count));
