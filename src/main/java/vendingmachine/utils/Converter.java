@@ -5,11 +5,16 @@ import vendingmachine.Coin;
 import vendingmachine.ErrorMessage;
 import vendingmachine.domain.GameOption;
 import vendingmachine.domain.Money;
+import vendingmachine.domain.Product;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Converter {
+
+	public static final String PRODUCT_STRING_PATTERN = "^\\[(.*?),(\\d*?),(\\d*?)\\]$";
 
 	public static int stringToInt(String value) {
 		try {
@@ -51,4 +56,27 @@ public class Converter {
 		int pickedCoinAmount = Randoms.pickNumberInList(GameOption.COIN_AMOUNTS);
 		return Coin.findByAmount(pickedCoinAmount);
 	}
+
+	public static Map<String, Product> stringToProductDictionary(String productsString) {
+		Map<String, Product> products = new HashMap<>();
+		String[] split = productsString.split(";");
+		for (String productString : split) {
+			Product product = StringToProduct(productString);
+			products.put(product.getName(), product);
+		}
+		return products;
+	}
+
+	private static Product StringToProduct(String productString) {
+		Pattern regexPattern = Pattern.compile(PRODUCT_STRING_PATTERN);
+		Matcher matcher = regexPattern.matcher(productString);
+		if (matcher.find()) {
+			String productName = matcher.group(1);
+			int price = Converter.stringToInt(matcher.group(2));
+			int quantity = Converter.stringToInt(matcher.group(3));
+			return new Product(productName, price, quantity);
+		}
+		throw new IllegalArgumentException(ErrorMessage.PRODUCT_FORMAT.getMessage());
+	}
+
 }

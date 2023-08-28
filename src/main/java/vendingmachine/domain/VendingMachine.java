@@ -11,7 +11,6 @@ public class VendingMachine {
 
 	private Money balance;
 	private Money insertedMoney;
-	// TODO : 원시값 포장 가능
 	private ProductRepository productRepository;
 	private CoinRepository balanceRepository;
 	private CoinRepository changeRepository;
