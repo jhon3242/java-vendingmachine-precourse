@@ -1,6 +1,7 @@
 package vendingmachine;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -25,11 +26,14 @@ class ApplicationTest extends NsTest {
         );
     }
 
+
+    @DisplayName("잔돈 반환 기능 테스트")
     @Nested
     class ChangeTest {
 
+        @DisplayName("잔돈 반환 금액이 동전으로 나누어 떨어지지 않는 경우 가능한 잔돈 만큼 반환한다.")
         @Test
-        void changeSuccessTest() {
+        void notEnoughTest() {
             assertRandomNumberInListTest(
                     () -> {
                         run("455", "[콜라,1500,20];[사이다,1000,10]", "3000", "콜라", "사이다");
@@ -38,6 +42,20 @@ class ApplicationTest extends NsTest {
                         );
                     },
                     100, 100, 50, 50, 50, 100
+            );
+        }
+
+        @DisplayName("잔돈 반환시 동전 개수가 최대한 적게 반환한다.")
+        @Test
+        void lessCoinTest() {
+            assertRandomNumberInListTest(
+                    () -> {
+                        run("1000", "[콜라,1500,20];[사이다,1000,10]", "3000", "콜라", "사이다");
+                        assertThat(output()).contains(
+                                "잔돈", "500원 - 1개", "100원 - 5개"
+                        );
+                    },
+                     100, 100, 100, 100, 100, 500
             );
         }
     }

@@ -17,8 +17,6 @@ public class MainController {
 		handleChange(vendingMachine);
 	}
 
-
-
 	private VendingMachine initVendingMachine() {
 		VendingMachine vendingMachine = new VendingMachine();
 		initBalance(vendingMachine);

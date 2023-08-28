@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class VendingMachineTest {
 
 	@Test
-	@DisplayName("보유 금액을 동전으로 바꾼뒤 더이상 동전으로 바꿀 수 없다.")
+	@DisplayName("보유 금액을 동전으로 바꾼 뒤 더이상 동전으로 바꿀 수 없다.")
 	void balanceToCoinSuccessTest() {
 		VendingMachine vendingMachine = new VendingMachine();
 		Money money = new Money(10_000);
@@ -24,7 +24,7 @@ class VendingMachineTest {
 	}
 
 	@Test
-	@DisplayName("보유 금액을 동전으로 바꾼뒤 더이상 동전으로 바꿀 수 없다.")
+	@DisplayName("보유 금액을 동전으로 바꾼 뒤 더이상 동전으로 바꿀 수 없다.")
 	void balanceToCoinSuccess2Test() {
 		VendingMachine vendingMachine = new VendingMachine();
 		Money money = new Money(100);

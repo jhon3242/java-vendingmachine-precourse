@@ -13,14 +13,6 @@ public class InputView {
 		IOValidator.validateString(input);
 		return input;
 	}
-//
-//	public String readProductInfo() {
-//
-//	}
-//
-//	public String readInsertedMoney() {
-//
-//	}
 
 	public String readProduct() {
 		System.out.println(Message.READ_PRODUCT);
