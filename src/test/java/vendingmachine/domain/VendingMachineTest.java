@@ -9,6 +9,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import vendingmachine.Coin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class VendingMachineTest {
@@ -42,9 +45,11 @@ class VendingMachineTest {
 		@BeforeEach
 		void beforeEach() {
 			vendingMachine = new VendingMachine();
-			vendingMachine.addProduct(new Product("productA", 1000, 10));
-			vendingMachine.addProduct(new Product("productB", 1200, 10));
-			vendingMachine.addProduct(new Product("productC", 1000, 0));
+			Map<String, Product> repository = new HashMap<>();
+			repository.put("productA", new Product("productA", 1000, 10));
+			repository.put("productB", new Product("productB", 1200, 10));
+			repository.put("productC", new Product("productC", 1000, 0));
+			vendingMachine.setProductRepository(repository);
 		}
 
 		@Test
@@ -67,7 +72,7 @@ class VendingMachineTest {
 		void canPurchaseTrueTest() {
 			vendingMachine.insertMoney(new Money(1000));
 			Assertions.assertThatNoException().isThrownBy(() -> {
-				vendingMachine.validateCanPurchase("productA");
+				vendingMachine.purchase("productA");
 			});
 		}
 
@@ -77,7 +82,7 @@ class VendingMachineTest {
 		void canPurchaseLowMoneyTest() {
 			vendingMachine.insertMoney(new Money(1000));
 			Assertions.assertThatThrownBy(() -> {
-				vendingMachine.validateCanPurchase("productB");
+				vendingMachine.purchase("productB");
 			}).isInstanceOf(IllegalArgumentException.class);
 		}
 
@@ -87,7 +92,7 @@ class VendingMachineTest {
 		void canPurchaseNoLeftTest() {
 			vendingMachine.insertMoney(new Money(1000));
 			Assertions.assertThatThrownBy(() -> {
-				vendingMachine.validateCanPurchase("productC");
+				vendingMachine.purchase("productC");
 			}).isInstanceOf(IllegalArgumentException.class);
 		}
 
@@ -97,7 +102,7 @@ class VendingMachineTest {
 		void canPurchaseIllegalFormatTest(String value) {
 			vendingMachine.insertMoney(new Money(5000));
 			Assertions.assertThatThrownBy(() -> {
-				vendingMachine.validateCanPurchase(value);
+				vendingMachine.purchase(value);
 			}).isInstanceOf(IllegalArgumentException.class);
 		}
 	}

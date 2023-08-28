@@ -6,8 +6,6 @@ import vendingmachine.domain.CoinRepository;
 import vendingmachine.domain.GameOption;
 import vendingmachine.domain.VendingMachine;
 
-import java.util.Map;
-
 public class OutputView {
 	public static final String ERROR_PREFIX = "[ERROR] : ";
 

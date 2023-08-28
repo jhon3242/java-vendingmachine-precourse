@@ -6,6 +6,8 @@ import vendingmachine.domain.Product;
 import vendingmachine.domain.VendingMachine;
 import vendingmachine.utils.Converter;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +21,7 @@ public class Service {
 
 	// TODO : 리펙터링
 	public void initProduct(VendingMachine vendingMachine, String productFormat) throws IllegalArgumentException {
+		Map<String, Product> products = new HashMap<>();
 		String[] split = productFormat.split(";");
 		for (String productString : split) {
 			String pattern = "^\\[(.*?),(\\d*?),(\\d*?)\\]$";
@@ -28,11 +31,11 @@ public class Service {
 				String productName = matcher.group(1);
 				int price = Converter.stringToInt(matcher.group(2));
 				int quantity = Converter.stringToInt(matcher.group(3));
-				Product product = new Product(productName, price, quantity);
-				vendingMachine.addProduct(product);
+				products.put(productName, new Product(productName, price, quantity));
 				continue;			}
 			throw new IllegalArgumentException(ErrorMessage.PRODUCT_FORMAT.getMessage());
 		}
+		vendingMachine.setProductRepository(products);
 	}
 
 	public void insertMoney(VendingMachine vendingMachine, Money money) {
@@ -45,7 +48,7 @@ public class Service {
 
 
 	public void purchase(VendingMachine vendingMachine, String productName) {
-		vendingMachine.validateCanPurchase(productName);
+//		vendingMachine.validateCanPurchase(productName);
 		vendingMachine.purchase(productName);
 	}
 

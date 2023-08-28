@@ -12,7 +12,7 @@ public class VendingMachine {
 	private Money balance;
 	private Money insertedMoney;
 	// TODO : 원시값 포장 가능
-	private Map<String, Product> productRepository = new HashMap<>();
+	private ProductRepository productRepository;
 	private CoinRepository balanceRepository;
 	private CoinRepository changeRepository;
 
@@ -27,9 +27,8 @@ public class VendingMachine {
 		this.balanceRepository = new CoinRepository(randomCoin);
 	}
 
-	// TODO : 기존 상품이 있으면 수량 추가(옵션)
-	public void addProduct(Product product) {
-		productRepository.put(product.getName(), product);
+	public void setProductRepository(Map<String, Product> products) {
+		this.productRepository = new ProductRepository(products);
 	}
 
 	public void insertMoney(Money money) {
@@ -50,44 +49,23 @@ public class VendingMachine {
 	}
 
 	private Product getMinCostProduct() {
-		return productRepository.values().stream()
-				.min(Comparator.comparing(Product::getCost))
-				.orElse(null);
+		return productRepository.getMinCostProduct();
 	}
 
 	private boolean notEnoughMoney(Product minCostProduct) {
 		return minCostProduct.getCost().compareTo(insertedMoney) > 0;
 	}
 
-	public void validateCanPurchase(String productName) {
-		Product product = productRepository.get(productName);
-		validateExist(product);
-		validateCount(product);
-		validateAfford(product);
-	}
-
-	private void validateExist(Product product) {
-		if (product == null) {
-			throw new IllegalArgumentException("존재하지 않는 상품명입니다.");
-		}
-	}
-
-	private void validateCount(Product product) {
-		if (product.getCount() <= 0) {
-			throw new IllegalArgumentException("해당 상품은 품절입니다.");
-		}
+	public void purchase(String productName) {
+		Product findProduct = productRepository.findByNameForPurchase(productName);
+		validateAfford(findProduct);
+		insertedMoney.subtractMoney(findProduct.getCost());
 	}
 
 	private void validateAfford(Product product) {
 		if (!product.canPurchase(insertedMoney)) {
 			throw new IllegalArgumentException("해당 상품을 구매하기에 돈이 부족합니다.");
 		}
-	}
-
-	public void purchase(String productName) {
-		Product product = productRepository.get(productName);
-		product.subtractCount();
-		insertedMoney.subtractMoney(product.getCost());
 	}
 
 	public void insertedMoneyToChange() {
@@ -102,4 +80,6 @@ public class VendingMachine {
 	public CoinRepository getChangeRepository() {
 		return changeRepository;
 	}
+
+
 }
