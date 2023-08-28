@@ -1,7 +1,7 @@
 package vendingmachine.domain;
 
-import camp.nextstep.edu.missionutils.Randoms;
 import vendingmachine.Coin;
+import vendingmachine.utils.Converter;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -22,20 +22,8 @@ public class VendingMachine {
 		}
 	}
 
-	private Map<Coin, Integer> moneyToRandomCoin(Money money) {
-		Map<Coin, Integer> result = new HashMap<>();
-		while (canChange(money)) {
-			Coin pickedCoin = pickCoin();
-			if (money.afford(pickedCoin.getAmount())) {
-				money.withdraw(pickedCoin.getAmount());
-				result.put(pickedCoin, result.getOrDefault(pickedCoin, 0) + 1);
-			}
-		}
-		return result;
-	}
-
 	public void balanceToCoin() {
-		Map<Coin, Integer> randomCoin = moneyToRandomCoin(balance);
+		Map<Coin, Integer> randomCoin = Converter.moneyToRandomCoin(balance);
 		this.balanceRepository = new CoinRepository(randomCoin);
 	}
 
@@ -43,19 +31,6 @@ public class VendingMachine {
 	public void addProduct(Product product) {
 		productRepository.put(product.getName(), product);
 	}
-
-	private Coin pickCoin() {
-		int pickedCoinAmount = Randoms.pickNumberInList(GameOption.COIN_AMOUNTS);
-		return Coin.findByAmount(pickedCoinAmount);
-	}
-
-	private boolean canChange(Money money) {
-		return money.afford(Coin.COIN_10.getAmount());
-	}
-
-//	public Map<Coin, Integer> getCoinMap() {
-//		return coinMap;
-//	}
 
 	public void insertMoney(Money money) {
 		this.insertedMoney = money;
