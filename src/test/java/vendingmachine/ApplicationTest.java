@@ -58,6 +58,34 @@ class ApplicationTest extends NsTest {
                      100, 100, 100, 100, 100, 500
             );
         }
+
+        @DisplayName("잔돈 반환시 동전 개수가 최대한 적게 반환한다.")
+        @Test
+        void lessCoinTest2() {
+            assertRandomNumberInListTest(
+                    () -> {
+                        run("2000", "[콜라,1200,20]", "2000", "콜라");
+                        assertThat(output()).contains(
+                                "잔돈", "500원 - 1개", "100원 - 3개"
+                        );
+                    },
+                    500, 500, 100, 100, 100, 100, 100, 50, 50, 50, 50,50, 50, 50, 50, 50, 10, 10, 10,10,10
+            );
+        }
+
+        @DisplayName("잔돈 반환시 동전 개수가 최대한 적게 반환한다.")
+        @Test
+        void lessCoinTest3() {
+            assertRandomNumberInListTest(
+                    () -> {
+                        run("2000", "[콜라,1200,50]", "2000", "콜라");
+                        assertThat(output()).contains(
+                                "잔돈", "500원 - 1개", "100원 - 3개"
+                        );
+                    },
+                    500,500, 500, 100, 100, 100, 50, 50, 50, 10, 10, 10, 10, 10
+                    );
+        }
     }
 
     @Test

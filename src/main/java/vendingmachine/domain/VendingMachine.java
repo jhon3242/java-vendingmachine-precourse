@@ -2,9 +2,10 @@ package vendingmachine.domain;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import vendingmachine.Coin;
-import vendingmachine.utils.Converter;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VendingMachine {
 
@@ -12,8 +13,8 @@ public class VendingMachine {
 	private Money insertedMoney;
 	// TODO : 원시값 포장 가능
 	private Map<String, Product> productRepository = new HashMap<>();
-	private Map<Coin, Integer> coinMap;
-	private Map<Coin, Integer> changeRepository;
+	private CoinRepository balanceRepository;
+	private CoinRepository changeRepository;
 
 	public void insertBalance(Money balance) {
 		if (this.balance == null) {
@@ -34,8 +35,8 @@ public class VendingMachine {
 	}
 
 	public void balanceToCoin() {
-		Map<Coin, Integer> coinIntegerMap = moneyToRandomCoin(balance);
-		this.coinMap = coinIntegerMap;
+		Map<Coin, Integer> randomCoin = moneyToRandomCoin(balance);
+		this.balanceRepository = new CoinRepository(randomCoin);
 	}
 
 	// TODO : 기존 상품이 있으면 수량 추가(옵션)
@@ -52,9 +53,9 @@ public class VendingMachine {
 		return money.afford(Coin.COIN_10.getAmount());
 	}
 
-	public Map<Coin, Integer> getCoinMap() {
-		return coinMap;
-	}
+//	public Map<Coin, Integer> getCoinMap() {
+//		return coinMap;
+//	}
 
 	public void insertMoney(Money money) {
 		this.insertedMoney = money;
@@ -115,20 +116,15 @@ public class VendingMachine {
 	}
 
 	public void insertedMoneyToChange() {
-		Map<Coin, Integer> coinRepository = new HashMap<>();
-		for (Coin coin : coinMap.keySet()) {
-			if (coinMap.get(coin) > 0 && insertedMoney.afford(coin.getAmount())) {
-				int moneyAmount = insertedMoney.getMoneyAmount();
-				int count = Math.min(moneyAmount / coin.getAmount(), coinMap.get(coin));
-				insertedMoney.subtractMoney(new Money(coin.getAmount() * count));
-				coinRepository.put(coin, count);
-			}
-		}
-		this.changeRepository = coinRepository;
+		Map<Coin, Integer> byMoney = balanceRepository.findByMoney(insertedMoney);
+		this.changeRepository = new CoinRepository(byMoney);
 	}
 
-	public Map<Coin, Integer> getChangeRepository() {
+	public CoinRepository getBalanceRepository() {
+		return balanceRepository;
+	}
+
+	public CoinRepository getChangeRepository() {
 		return changeRepository;
 	}
-
 }

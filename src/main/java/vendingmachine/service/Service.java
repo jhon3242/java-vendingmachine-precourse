@@ -1,13 +1,11 @@
 package vendingmachine.service;
 
-import vendingmachine.Coin;
 import vendingmachine.ErrorMessage;
 import vendingmachine.domain.Money;
 import vendingmachine.domain.Product;
 import vendingmachine.domain.VendingMachine;
 import vendingmachine.utils.Converter;
 
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -28,7 +28,7 @@ public class MainController {
 		try {
 			String balanceString = inputView.readVendingMachineBalance();
 			service.initBalance(vendingMachine, balanceString);
-			outputView.printAllCoins(vendingMachine);
+			outputView.printBalanceAllCoin(vendingMachine);
 		} catch (IllegalArgumentException e) {
 			outputView.printError(e);
 			initBalance(vendingMachine);
@@ -77,7 +77,7 @@ public class MainController {
 	private void handleChange(VendingMachine vendingMachine) {
 		outputView.printInsertedMoney(vendingMachine);
 		service.changeIntoCoins(vendingMachine);
-		outputView.printChange(vendingMachine);
+		outputView.printChangeCoin(vendingMachine);
 	}
 
 
