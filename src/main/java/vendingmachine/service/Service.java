@@ -21,7 +21,7 @@ public class Service {
 	}
 
 	public void insertMoney(VendingMachine vendingMachine, Money money) {
-		vendingMachine.insertMoney(money);
+		vendingMachine.setInsertMoney(money);
 	}
 
 	public boolean hasChanceToPurchase(VendingMachine vendingMachine) {

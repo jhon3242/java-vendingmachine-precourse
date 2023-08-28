@@ -12,20 +12,20 @@ public class PurchaseController {
 	private static final Service service = new Service();
 
 	public void handlePurchase(VendingMachine vendingMachine) {
-		initMoney(vendingMachine);
+		initInsertMoney(vendingMachine);
 		while (service.hasChanceToPurchase(vendingMachine)) {
 			outputView.printInsertedMoney(vendingMachine);
 			purchaseProduct(vendingMachine);
 		}
 	}
 
-	private void initMoney(VendingMachine vendingMachine) {
+	private void initInsertMoney(VendingMachine vendingMachine) {
 		try {
 			Money money = new Money(inputView.readMoney());
 			service.insertMoney(vendingMachine, money);
 		} catch (IllegalArgumentException e) {
 			outputView.printError(e);
-			initMoney(vendingMachine);
+			initInsertMoney(vendingMachine);
 		}
 	}
 

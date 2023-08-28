@@ -3,8 +3,6 @@ package vendingmachine.domain;
 import vendingmachine.Coin;
 import vendingmachine.utils.Converter;
 
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 
 public class VendingMachine {
@@ -30,7 +28,7 @@ public class VendingMachine {
 		this.productRepository = new ProductRepository(products);
 	}
 
-	public void insertMoney(Money money) {
+	public void setInsertMoney(Money money) {
 		this.insertedMoney = money;
 	}
 

@@ -14,7 +14,6 @@ public class Money implements Comparable<Money>{
 		return money - amount >= 0;
 	}
 
-
 	public void withdraw(int amount) {
 		this.money -= amount;
 	}
