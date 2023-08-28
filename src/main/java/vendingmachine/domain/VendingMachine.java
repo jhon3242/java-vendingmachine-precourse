@@ -66,16 +66,17 @@ public class VendingMachine {
 	}
 
 	public boolean hasChanceToPurchase() {
-		Product minCostProduct = productRepository.values().stream()
-				.min(Comparator.comparing(Product::getCost))
-				.orElse(null);
-		if (minCostProduct == null) {
-			return false;
-		}
-		if (notEnoughMoney(minCostProduct)) {
+		Product minCostProduct = getMinCostProduct();
+		if (minCostProduct == null || notEnoughMoney(minCostProduct)) {
 			return false;
 		}
 		return true;
+	}
+
+	private Product getMinCostProduct() {
+		return productRepository.values().stream()
+				.min(Comparator.comparing(Product::getCost))
+				.orElse(null);
 	}
 
 	private boolean notEnoughMoney(Product minCostProduct) {

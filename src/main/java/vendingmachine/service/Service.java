@@ -41,6 +41,10 @@ public class Service {
 		vendingMachine.insertMoney(money);
 	}
 
+	public boolean hasChanceToPurchase(VendingMachine vendingMachine) {
+		return vendingMachine.hasChanceToPurchase();
+	}
+
 
 	public void purchase(VendingMachine vendingMachine, String productName) {
 		vendingMachine.validateCanPurchase(productName);

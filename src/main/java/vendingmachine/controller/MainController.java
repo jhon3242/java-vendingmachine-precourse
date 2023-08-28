@@ -48,7 +48,7 @@ public class MainController {
 
 	private void handlePurchase(VendingMachine vendingMachine) {
 		initMoney(vendingMachine);
-		while (vendingMachine.hasChanceToPurchase()) {
+		while (service.hasChanceToPurchase(vendingMachine)) {
 			outputView.printInsertedMoney(vendingMachine);
 			purchaseProduct(vendingMachine);
 		}
